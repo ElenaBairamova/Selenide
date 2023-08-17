@@ -9,19 +9,21 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
 public class CardTest {
     private String generationData(int addDays, String pattern) {
         return LocalDate.now().plusDays(addDays).format(DateTimeFormatter.ofPattern(pattern));
     }
+
     @BeforeEach
     void openSite() {
         open("http://localhost:9999");
     }
 
     @Test
-    void positiveTest1(){
+    void positiveTest1() {
 
         $("[data-test-id=city] input").setValue("Москва");
         String currentData = generationData(4, "dd.MM.yyyy");
@@ -32,9 +34,7 @@ public class CardTest {
         $("[data-test-id=agreement]").click();
         $("button.button").click();
         $(".notification__content").shouldBe(Condition.visible, Duration.ofSeconds(15))
-                .shouldHave(Condition.exactText("Встреча успешно забронирована на "  + currentData));
+                .shouldHave(Condition.exactText("Встреча успешно забронирована на " + currentData));
     }
-
-    }
-
+}
 
